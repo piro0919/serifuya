@@ -1,0 +1,14 @@
+@import "styles/constants";
+
+.layout {
+  display: grid;
+  justify-items: center;
+  grid-template: repeat(3, auto) /1fr;
+}
+
+.header-wrapper,
+.main,
+.footer-wrapper {
+  max-width: $maxWidth;
+  width: 100%;
+}
