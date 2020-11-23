@@ -1,16 +1,20 @@
 import firebase from 'firebase/app';
 import 'firebase/storage';
+import getConfig from 'next/config'
+
+
+const { publicRuntimeConfig: { API_KEY, APP_ID, AUTH_DOMAIN, DATABASE_URL, MEASUREMENT_ID, MESSAGING_SENDER_ID, PROJECT_ID, STORAGE_BUCKET } } = getConfig();
 
 const firebaseConfig = {
-  apiKey: process.env.API_KEY,
-  appId: process.env.APP_ID,
-  authDomain: process.env.AUTH_DOMAIN,
-  databaseURL: process.env.DATABASE_URL,
-  measurementId: process.env.MEASUREMENT_ID,
-  messagingSenderId: process.env.MESSAGING_SENDER_ID,
-  projectId: process.env.PROJECT_ID,
-  storageBucket: process.env.STORAGE_BUCKET,
-};
+  apiKey: API_KEY,
+  appId: APP_ID,
+  authDomain: AUTH_DOMAIN,
+  databaseURL: DATABASE_URL,
+  measurementId: MEASUREMENT_ID,
+  messagingSenderId: MESSAGING_SENDER_ID,
+  projectId: PROJECT_ID,
+  storageBucket: STORAGE_BUCKET,
+}
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -28,3 +32,9 @@ export const getListAll = async (): Promise<ListAll> => {
 
   return listAll.items.map(({ name }) => ({ name }))
 };
+
+export const getDownloadURL = async (): Promise<any> => {
+  const storageRef = storage.ref("voices")
+
+  return storageRef.child("voices/あさですよー.mp3").getDownloadURL()
+}

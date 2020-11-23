@@ -4,6 +4,7 @@ import "./style.module.scss";
 import Layout from "components/templates/Layout";
 import axios from "axios";
 import { getListAll } from "api";
+import Link from "next/link";
 
 type Voice = {
   nameWithoutExtension: string;
@@ -28,11 +29,15 @@ const Pages: NextPage = () => {
 
   return (
     <Layout>
-      <div styleName="hoge">
+      <ul styleName="hoge">
         {voices.map(({ nameWithoutExtension }) => (
-          <div key={nameWithoutExtension}>{nameWithoutExtension}</div>
+          <li key={nameWithoutExtension}>
+            <Link href={`/serifu/${nameWithoutExtension}`}>
+              <a>{nameWithoutExtension}</a>
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </Layout>
   );
 };

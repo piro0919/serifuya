@@ -1,3 +1,5 @@
 .hoge {
-  color: red;
+  display: grid;
+  gap: 24px 12px;
+  grid-template: auto / repeat(3, 1fr);
 }
