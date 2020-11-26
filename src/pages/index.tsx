@@ -1,45 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { NextPage } from "next";
-import "./style.module.scss";
+import React from "react";
+import { GetServerSideProps, NextPage } from "next";
 import Layout from "components/templates/Layout";
+import SerifuList from "components/organisms/SerifuList";
 import axios from "axios";
-import { getListAll } from "api";
-import Link from "next/link";
 
 type Voice = {
-  nameWithoutExtension: string;
+  id: string;
+  name: any;
 };
 
-const Pages: NextPage = () => {
-  const [voices, setVoices] = useState<Voice[]>([]);
+export type PagesProps = {
+  voices: Voice[];
+};
 
-  useEffect(() => {
-    const callback = async () => {
-      const listAll = await getListAll();
+const Pages: NextPage<PagesProps> = ({ voices }) => (
+  <Layout>
+    <SerifuList voices={voices} />
+  </Layout>
+);
 
-      setVoices(
-        listAll.map(({ name }) => ({
-          nameWithoutExtension: name.replace(/\.[^/.]+$/, ""),
-        }))
-      );
-    };
+export const getServerSideProps: GetServerSideProps<PagesProps> = async () => {
+  const { data } = await axios.get("http://localhost:3000/api/voices");
+  const voices = data.map(({ id, name }) => ({ id, name }));
 
-    callback();
-  }, []);
-
-  return (
-    <Layout>
-      <ul styleName="hoge">
-        {voices.map(({ nameWithoutExtension }) => (
-          <li key={nameWithoutExtension}>
-            <Link href={`/serifu/${nameWithoutExtension}`}>
-              <a>{nameWithoutExtension}</a>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </Layout>
-  );
+  return {
+    props: {
+      voices,
+    },
+  };
 };
 
 export default Pages;
