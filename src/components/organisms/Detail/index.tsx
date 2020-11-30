@@ -22,7 +22,7 @@ const Detail: FC<DetailProps> = ({ expires, handleClick, heading, src }) => (
           <DownloadIcon />
         </button>
       </a>
-      <ReactTooltip effect="solid" id="expires" type="info">
+      <ReactTooltip effect="solid" id="expires" place="left">
         <span styleName="expires">{`${dayjs(expires).format(
           "YYYY/MM/DD HH:mm:ss"
         )} まで有効`}</span>

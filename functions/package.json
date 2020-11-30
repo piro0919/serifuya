@@ -16,6 +16,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "dayjs": "1.9.6",
+    "dotenv": "8.2.0",
     "express": "4.17.1",
     "firebase-admin": "^9.2.0",
     "firebase-functions": "^3.11.0"
