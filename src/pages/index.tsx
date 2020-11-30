@@ -23,7 +23,7 @@ const Pages: NextPage<PagesProps> = ({ voices }) => (
 
 export const getServerSideProps: GetServerSideProps<PagesProps> = async () => {
   const { data } = await axios.get(
-    `https://asia-northeast1-serifuya-1f5b4.cloudfunctions.net/api/voices`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/voices`
   );
   const voices = data.map(({ id, name }) => ({ id, name }));
 
