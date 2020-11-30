@@ -43,14 +43,17 @@ type VoicesResBody = {
 
 app.get(
   "/voices",
-  async ({ method }: any, response: functions.Response<VoicesResBody>) => {
+  async (
+    { method, query: { limit = "0", offset = "0" } }: any,
+    response: functions.Response<VoicesResBody>
+  ) => {
     if (method === "GET") {
       const firestore = admin.firestore();
       const collectionRef = firestore.collection("voices");
       const { docs } = await collectionRef
         .orderBy("name", "asc")
-        .limit(0)
-        .offset(0)
+        .limit(parseInt(limit, 10))
+        .offset(parseInt(offset, 10))
         .get();
       const body = docs.map((doc) => {
         const { id } = doc;

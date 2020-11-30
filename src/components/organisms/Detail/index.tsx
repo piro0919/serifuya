@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import DownloadIcon from "components/atoms/DownloadIcon";
 import Heading2, { Heading2Props } from "components/atoms/Heading2";
 import React, { ComponentPropsWithoutRef, FC } from "react";

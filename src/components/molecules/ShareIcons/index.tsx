@@ -3,7 +3,6 @@ import ShareFacebookIcon from "components/atoms/ShareFacebookIcon";
 import ShareHatenaIcon from "components/atoms/ShareHatenaIcon";
 import ShareLineIcon from "components/atoms/ShareLineIcon";
 import ShareTwitterIcon from "components/atoms/ShareTwitterIcon";
-import { useRouter } from "next/router";
 import React, { FC, useEffect, useState } from "react";
 import {
   EmailShareButton,
