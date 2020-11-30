@@ -2,7 +2,8 @@ name: DEPLOY
 on:
   push:
     branches: [master]
-    paths: 'functions/**'
+    paths:
+      - "functions/**"
 jobs:
   deploy:
     runs-on: ubuntu-latest
