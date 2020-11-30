@@ -6,5 +6,12 @@
 }
 
 .heading2-wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
   margin: -32px 0 0;
+}
+
+.expires {
+  font-family: arial, sans-serif;
 }

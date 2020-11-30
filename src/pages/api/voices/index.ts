@@ -9,7 +9,7 @@ type ResBody = {
 const voices = async ({ method }: NextApiRequest, res: NextApiResponse<ResBody>) => {
   if (method === 'GET') {
     const { data } = await axios.get(
-      "http://localhost:5000/serifuya-1f5b4/asia-northeast1/api/voices"
+      "http://localhost:5001/serifuya-1f5b4/asia-northeast1/api/voices"
     );
 
     res.status(200).send(data)

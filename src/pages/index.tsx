@@ -3,6 +3,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Layout from "components/templates/Layout";
 import SerifuList from "components/organisms/SerifuList";
 import axios from "axios";
+import Head from "components/templates/Head";
 
 type Voice = {
   id: string;
@@ -15,6 +16,7 @@ export type PagesProps = {
 
 const Pages: NextPage<PagesProps> = ({ voices }) => (
   <Layout>
+    <Head />
     <SerifuList voices={voices} />
   </Layout>
 );

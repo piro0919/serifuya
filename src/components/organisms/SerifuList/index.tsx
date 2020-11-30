@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { ComponentPropsWithoutRef, FC, useMemo } from "react";
 import Link from "next/link";
 import "./style.module.scss";
 
@@ -12,17 +12,19 @@ export type SerifuListProps = {
 };
 
 const SerifuList: FC<SerifuListProps> = ({ voices }) => {
-  return (
-    <ul styleName="list">
-      {voices.map(({ id, name }) => (
+  const items = useMemo<ComponentPropsWithoutRef<"ul">["children"]>(
+    () =>
+      voices.map(({ id, name }) => (
         <li key={id}>
           <Link href={`/serifu/${id}`}>
             <a target="_blank">{name}</a>
           </Link>
         </li>
-      ))}
-    </ul>
+      )),
+    []
   );
+
+  return <ul styleName="list">{items}</ul>;
 };
 
 export default SerifuList;
