@@ -3,7 +3,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Layout from "components/templates/Layout";
 import SerifuList from "components/organisms/SerifuList";
 import Head from "components/templates/Head";
-import axios from "axios";
+import api from "api";
 
 type Voice = {
   id: string;
@@ -22,9 +22,7 @@ const Pages: NextPage<PagesProps> = ({ voices }) => (
 );
 
 export const getServerSideProps: GetServerSideProps<PagesProps> = async () => {
-  const { data } = await axios.get(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/voices`
-  );
+  const { data } = await api.get("/voices");
   const voices = data.map(({ id, name }) => ({ id, name }));
 
   return {
