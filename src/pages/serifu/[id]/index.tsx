@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Layout from "components/templates/Layout";
 import Detail, { DetailProps } from "components/organisms/Detail";
@@ -7,14 +7,29 @@ import "firebase/storage";
 import Head, { HeadProps } from "components/templates/Head";
 import FileSaver from "file-saver";
 
-export type IdProps = Pick<DetailProps, "expires"> & {
-  downloadUrl: DetailProps["src"];
+export type IdProps = {
+  id: string;
   name: HeadProps["title"];
 };
 
-const Id: NextPage<IdProps> = ({ expires, downloadUrl, name }) => {
+const Id: NextPage<IdProps> = ({ id, name }) => {
+  const [downloadUrl, setDownloadUrl] = useState("");
+  const [expires, setExpires] = useState("");
   const handleClick = useCallback<DetailProps["handleClick"]>(() => {
-    FileSaver.saveAs(downloadUrl, "hoge.mp3");
+    FileSaver.saveAs(downloadUrl, `${name}.mp3`);
+  }, []);
+
+  useEffect(() => {
+    const callback = async () => {
+      const {
+        data: { downloadUrl, expires },
+      } = await api.get(`/voices/${id}/url`);
+
+      setDownloadUrl(downloadUrl);
+      setExpires(expires);
+    };
+
+    callback();
   }, []);
 
   return (
@@ -34,14 +49,13 @@ export const getStaticProps: GetStaticProps<IdProps> = async ({
   params: { id },
 }) => {
   const {
-    data: { downloadUrl, expires, name },
+    data: { name },
   } = await api.get(`/voices/${id}`);
 
   return {
     props: {
-      expires,
-      downloadUrl,
       name,
+      id: Array.isArray(id) ? "" : id,
     },
   };
 };

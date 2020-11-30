@@ -2,6 +2,7 @@ import * as functions from "firebase-functions";
 import * as express from "express";
 import voices from "./voices";
 import voicesId from "./voices/id";
+import voicesIdUrl from "./voices/id/url";
 import * as admin from "firebase-admin";
 
 if (!admin.apps.length && process.env.FIREBASE_CONFIG) {
@@ -20,16 +21,20 @@ if (!admin.apps.length && process.env.FIREBASE_CONFIG) {
   });
 }
 
-const cors = require("cors");
 const app = express();
 const main = express();
 const firestore = admin.firestore();
 const storage = admin.storage();
 
-app.use(cors());
+app.use((_, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://serifuya.kk-web.link");
+
+  next();
+});
 
 app.get("/voices", voices({ firestore }) as any);
-app.get("/voices/:id", voicesId({ firestore, storage }) as any);
+app.get("/voices/:id", voicesId({ firestore }) as any);
+app.get("/voices/:id/url", voicesIdUrl({ firestore, storage }) as any);
 
 main.use("", app);
 
