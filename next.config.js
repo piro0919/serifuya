@@ -25,8 +25,7 @@ module.exports = withPlugins(
   ],
   {
     publicRuntimeConfig: {
-      FIREBASE_BASE_URL: process.env.FIREBASE_BASE_URL,
-      NEXT_BASE_URL: process.env.NEXT_BASE_URL,
+      BASE_URL: process.env.BASE_URL,
     },
   }
 );
