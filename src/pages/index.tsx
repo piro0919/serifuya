@@ -36,20 +36,16 @@
 
 import React from "react";
 import { GetServerSideProps, NextPage } from "next";
-import api from "api";
 
-const Pages: NextPage<any> = ({ voices }) => {
-  console.log(voices);
+const Pages: NextPage<any> = (a) => {
+  console.log(a);
 
   return <div>a</div>;
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const { data } = await api.get("/voices");
-  const voices = data.map(({ id, name }) => ({ id, name }));
-
   return {
-    props: { voices },
+    props: { hoge: process.env },
   };
 };
 
