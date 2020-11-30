@@ -38,15 +38,18 @@ import React from "react";
 import { GetServerSideProps, NextPage } from "next";
 import api from "api";
 
-const Pages: NextPage = () => <div>a</div>;
+const Pages: NextPage<any> = ({ voices }) => {
+  console.log(voices);
+
+  return <div>a</div>;
+};
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const { data } = await api.get("/voices");
-
-  console.log(data);
+  const voices = data.map(({ id, name }) => ({ id, name }));
 
   return {
-    props: {},
+    props: { voices },
   };
 };
 
