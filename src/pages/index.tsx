@@ -35,8 +35,19 @@
 // export default Pages;
 
 import React from "react";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
+import api from "api";
 
 const Pages: NextPage = () => <div>a</div>;
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const { data } = await api.get("/voices");
+
+  console.log(data);
+
+  return {
+    props: {},
+  };
+};
 
 export default Pages;
