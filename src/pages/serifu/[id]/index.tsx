@@ -2,12 +2,12 @@ import React, { useCallback } from "react";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Layout from "components/templates/Layout";
 import Detail, { DetailProps } from "components/organisms/Detail";
-import axios from "axios";
+import api from "api";
 import "firebase/storage";
 import Head, { HeadProps } from "components/templates/Head";
 import FileSaver from "file-saver";
 
-export type IdProps = {
+export type IdProps = Pick<DetailProps, "expires"> & {
   downloadUrl: DetailProps["src"];
   name: HeadProps["title"];
 };
@@ -35,7 +35,7 @@ export const getStaticProps: GetStaticProps<IdProps> = async ({
 }) => {
   const {
     data: { downloadUrl, expires, name },
-  } = await axios.get(`http://localhost:3000/api/voices/${id}`);
+  } = await api.get(`/voices/${id}`);
 
   return {
     props: {
@@ -51,7 +51,7 @@ type IdParams = {
 };
 
 export const getStaticPaths: GetStaticPaths<IdParams> = async () => {
-  const { data } = await axios.get("http://localhost:3000/api/voices");
+  const { data } = await api.get("/voices");
   const paths = data.map(({ id }) => ({ params: { id } }));
 
   return {

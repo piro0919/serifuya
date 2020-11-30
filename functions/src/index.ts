@@ -4,27 +4,27 @@ import voices from "./voices";
 import voicesId from "./voices/id";
 import * as admin from "firebase-admin";
 
-const app = express();
+if (!admin.apps.length && process.env.FIREBASE_CONFIG) {
+  const { databaseURL, storageBucket, projectId } = JSON.parse(process.env.FIREBASE_CONFIG)
 
-if (!admin.apps.length) {
   admin.initializeApp({
+    databaseURL,
+    storageBucket,
     credential: admin.credential.cert({
-      clientEmail: "piyo",
-      privateKey: "moge",
-      projectId: "serifuya-1f5b4",
+      projectId,
+      clientEmail: functions.config().serifuya.client_email,
+      privateKey: functions.config().serifuya.private_key.replace(/\\n/g, '\n'),
     }),
-    databaseURL: "fuga",
-    storageBucket: "hoge",
-  });
+  })
 }
 
+const app = express();
+const main = express();
 const firestore = admin.firestore();
 const storage = admin.storage();
 
 app.get("/voices", voices({ firestore }) as any);
 app.get("/voices/:id", voicesId({ firestore, storage }) as any);
-
-const main = express();
 
 main.use("", app);
 
