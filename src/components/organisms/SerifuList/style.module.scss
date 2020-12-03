@@ -1,6 +1,10 @@
 @import "styles/constants";
 @import "sass-mq";
 
+.wrapper {
+  width: 100%;
+}
+
 .wrapper :global(.infinite-scroll) {
   @include mq($until: tablet) {
     grid-template-columns: repeat(1, 1fr);
