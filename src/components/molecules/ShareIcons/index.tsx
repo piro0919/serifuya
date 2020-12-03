@@ -26,31 +26,21 @@ const ShareIcons: FC = () => {
 
   return (
     <div styleName="wrapper">
-      <div>
-        <TwitterShareButton url={url}>
-          <ShareTwitterIcon />
-        </TwitterShareButton>
-      </div>
-      <div>
-        <FacebookShareButton url={url}>
-          <ShareFacebookIcon />
-        </FacebookShareButton>
-      </div>
-      <div>
-        <EmailShareButton url={url}>
-          <ShareEmailIcon />
-        </EmailShareButton>
-      </div>
-      <div>
-        <LineShareButton url={url}>
-          <ShareLineIcon />
-        </LineShareButton>
-      </div>
-      <div>
-        <HatenaShareButton url={url}>
-          <ShareHatenaIcon />
-        </HatenaShareButton>
-      </div>
+      <TwitterShareButton url={url}>
+        <ShareTwitterIcon />
+      </TwitterShareButton>
+      <FacebookShareButton url={url}>
+        <ShareFacebookIcon />
+      </FacebookShareButton>
+      <EmailShareButton url={url}>
+        <ShareEmailIcon />
+      </EmailShareButton>
+      <LineShareButton url={url}>
+        <ShareLineIcon />
+      </LineShareButton>
+      <HatenaShareButton url={url}>
+        <ShareHatenaIcon />
+      </HatenaShareButton>
     </div>
   );
 };

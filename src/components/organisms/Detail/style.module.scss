@@ -1,17 +1,17 @@
+@import "styles/constants";
+
 .wrapper {
-  align-content: center;
-  display: grid;
-  gap: 32px;
-  height: 100%;
+  background: map-get($map: $color, $key: white);
+  padding: 32px;
+  width: 100%;
 }
 
 .heading2-wrapper {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin: -32px 0 0;
 }
 
-.expires {
-  font-family: arial, sans-serif;
+.player-wrapper {
+  margin: 16px 0 0;
 }

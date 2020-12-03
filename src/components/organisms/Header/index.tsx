@@ -12,9 +12,7 @@ const Header: FC = () => (
         <Heading1 />
       </a>
     </Link>
-    <div>
-      <ShareIcons />
-    </div>
+    <ShareIcons />
   </header>
 );
 

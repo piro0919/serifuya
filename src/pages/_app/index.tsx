@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 import "../../styles/globals.scss";
 import "ress";
 import "react-h5-audio-player/lib/styles.css";
+import "react-toastify/dist/ReactToastify.css";
 
 export type MyAppProps = AppProps;
 

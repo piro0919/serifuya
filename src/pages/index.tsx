@@ -24,8 +24,8 @@ const Pages: NextPage<PagesProps> = ({ voices }) => {
   const next = useCallback<SerifuListProps["next"]>(async () => {
     const { data } = await api.get("/voices", {
       params: {
-        limit: 54,
-        offset: dataLength.toString(),
+        limit: 48,
+        offset: dataLength,
       },
     });
 
@@ -53,8 +53,8 @@ const Pages: NextPage<PagesProps> = ({ voices }) => {
 export const getServerSideProps: GetServerSideProps<PagesProps> = async () => {
   const { data } = await api.get("/voices", {
     params: {
-      limit: "54",
-      offset: "0",
+      limit: 48,
+      offset: 0,
     },
   });
   const voices = data.map(({ id, name }) => ({ id, name }));

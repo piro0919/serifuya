@@ -1,0 +1,14 @@
+@import "styles/constants";
+
+.wrapper {
+  display: grid;
+  gap: 32px;
+  width: 100%;
+}
+
+.article {
+  background: map-get($map: $color, $key: white);
+  display: grid;
+  gap: 16px;
+  padding: 32px;
+}

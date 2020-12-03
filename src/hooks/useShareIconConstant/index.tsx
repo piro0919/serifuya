@@ -4,7 +4,7 @@ const useShareIconConstant = () => {
   const shareIconConstant = useMemo(
     () => ({
       round: true,
-      size: 28,
+      size: 24,
     }),
     []
   );

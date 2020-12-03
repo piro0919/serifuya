@@ -19,7 +19,9 @@ const SerifuList: FC<SerifuListProps> = ({ dataLength, next, voices }) => {
       voices.map(({ id, name }) => (
         <div key={id}>
           <Link href={`/serifu/${id}`}>
-            <a>{name}</a>
+            <a>
+              <div styleName="item">{name}</div>
+            </a>
           </Link>
         </div>
       )),

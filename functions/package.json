@@ -1,19 +1,4 @@
 {
-  "name": "functions",
-  "scripts": {
-    "lint": "eslint \"src/**/*\"",
-    "build": "tsc",
-    "serve": "npm run build && firebase emulators:start --only functions",
-    "serve:watch": "concurrently \"tsc -w\" \"firebase emulators:start --only functions\"",
-    "shell": "npm run build && firebase functions:shell",
-    "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
-  },
-  "engines": {
-    "node": "12"
-  },
-  "main": "lib/index.js",
   "dependencies": {
     "dayjs": "1.9.6",
     "dotenv": "8.2.0",
@@ -30,5 +15,20 @@
     "firebase-functions-test": "^0.2.0",
     "typescript": "^3.8.0"
   },
-  "private": true
+  "engines": {
+    "node": "12"
+  },
+  "main": "lib/index.js",
+  "name": "functions",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "deploy": "firebase deploy --only functions",
+    "lint": "eslint \"src/**/*\"",
+    "logs": "firebase functions:log",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "serve:watch": "concurrently \"tsc -w\" \"firebase emulators:start --only functions\"",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell"
+  }
 }

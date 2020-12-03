@@ -1,24 +1,35 @@
+@import "styles/constants";
+@import "sass-mq";
+
 @font-face {
-  font-family: 'mamelon';
-  src:
-    url('/fonts/Mamelon-3.5HiRegular.woff2') format('woff2'),
-    url('/fonts/Mamelon-3.5HiRegular.woff') format('woff'),
-    url('/fonts/Mamelon-3.5HiRegular.ttf') format('truetype');
+  font-family: "mamelon";
+  src: url("/fonts/Mamelon-3.5HiRegular.woff2") format("woff2"),
+    url("/fonts/Mamelon-3.5HiRegular.woff") format("woff"),
+    url("/fonts/Mamelon-3.5HiRegular.ttf") format("truetype");
 }
 
 html {
-  font: 62.5% 'mamelon', sans-serif;
+  @include mq($until: tablet) {
+    font-size: 50%;
+  }
+
+  font: 62.5% "mamelon", sans-serif;
   overflow: auto scroll;
 }
 
 body {
-  color: #222;
+  background: map-get($map: $color, $key: gray);
+  color: map-get($map: $color, $key: black);
   font-size: 1.6rem;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+svg {
+  vertical-align: top;
 }
 
 ul {
