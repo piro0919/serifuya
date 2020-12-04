@@ -9,9 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - run: |
-        cd functions
-        npm install
+      - working-directory: ./functions
+        run: npm install
       - uses: w9jds/firebase-action@master
         with:
           args: deploy --only functions
