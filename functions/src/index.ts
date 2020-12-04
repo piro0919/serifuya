@@ -29,8 +29,8 @@ app.use((_, res, next) => {
   res.header(
     "Access-Control-Allow-Origin",
     process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://serifuya.kk-web.link"
+      ? functions.config().serifuya.access_control_allow_origin_development
+      : functions.config().serifuya.access_control_allow_origin_production
   );
 
   next();
