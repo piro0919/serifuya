@@ -25,6 +25,11 @@
 }
 
 .main-inner {
+  @include mq($until: desktop) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   align-items: center;
   display: grid;
 }

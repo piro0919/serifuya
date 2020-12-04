@@ -26,6 +26,7 @@ const app = express();
 const main = express();
 
 app.use((_, res, next) => {
+  res.header("Access-Control-Allow-Headers", "content-type");
   res.header(
     "Access-Control-Allow-Origin",
     process.env.NODE_ENV === "development"
@@ -44,30 +45,28 @@ type VoicesResBody = {
 app.get(
   "/voices",
   async (
-    { method, query: { limit = "0", offset = "0" } }: any,
+    { query: { limit = "0", offset = "0" } }: any,
     response: functions.Response<VoicesResBody>
   ) => {
-    if (method === "GET") {
-      const firestore = admin.firestore();
-      const collectionRef = firestore.collection("voices");
-      const { size } = await collectionRef.get();
-      const { docs } = await collectionRef
-        .orderBy("name", "asc")
-        .limit(parseInt(limit, 10))
-        .offset(parseInt(offset, 10))
-        .get();
-      const body = docs.map((doc) => {
-        const { id } = doc;
+    const firestore = admin.firestore();
+    const collectionRef = firestore.collection("voices");
+    const { size } = await collectionRef.get();
+    const { docs } = await collectionRef
+      .orderBy("name", "asc")
+      .limit(parseInt(limit, 10))
+      .offset(parseInt(offset, 10))
+      .get();
+    const body = docs.map((doc) => {
+      const { id } = doc;
 
-        return {
-          id: id,
-          name: doc.get("name"),
-        };
-      });
+      return {
+        id: id,
+        name: doc.get("name"),
+      };
+    });
 
-      response.set("size", size.toString());
-      response.send(body);
-    }
+    response.set("size", size.toString());
+    response.send(body);
   }
 );
 
@@ -80,41 +79,62 @@ type VoicesIdResBody = {
 app.get(
   "/voices/:id",
   async (
-    { method, params: { id } }: any,
+    { params: { id } }: any,
     response: functions.Response<VoicesIdResBody>
   ) => {
-    if (method === "GET") {
-      const firestore = admin.firestore();
-      const docRef = firestore.collection("voices").doc(id);
-      const snapshot = await docRef.get();
-      const name = snapshot.get("name");
-      const expires = dayjs().locale("ja").add(3, "minute").toDate();
+    const firestore = admin.firestore();
+    const docRef = firestore.collection("voices").doc(id);
+    const snapshot = await docRef.get();
+    const name = snapshot.get("name");
+    const expires = dayjs().locale("ja").add(3, "minute").toDate();
 
-      if (process.env.NODE_ENV === "development") {
-        response.send({
-          downloadUrl: "",
-          expires: expires.toString(),
-          name,
-        });
-
-        return;
-      }
-
-      const storage = admin.storage();
-      const signedUrl = await storage
-        .bucket()
-        .file(`voices/${name}.mp3`)
-        .getSignedUrl({
-          expires,
-          action: "read",
-        });
-
+    if (process.env.NODE_ENV === "development") {
       response.send({
-        downloadUrl: signedUrl[0],
+        downloadUrl: "",
         expires: expires.toString(),
         name,
       });
+
+      return;
     }
+
+    const storage = admin.storage();
+    const signedUrl = await storage
+      .bucket()
+      .file(`voices/${name}.mp3`)
+      .getSignedUrl({
+        expires,
+        action: "read",
+      });
+
+    response.send({
+      downloadUrl: signedUrl[0],
+      expires: expires.toString(),
+      name,
+    });
+  }
+);
+
+app.post(
+  "/mail",
+  async (
+    { body: { body, email, name, subject } }: any,
+    res: functions.Response
+  ) => {
+    const send = require("gmail-send")({
+      pass: functions.config().serifuya.password,
+      user: functions.config().serifuya.user,
+    });
+
+    send(
+      {
+        from: `${name} <${email}>`,
+        html: body.replace(/\n/g, "<br />"),
+        subject: `[serifuya] ${subject || "no subject"}`,
+        to: `piro <${functions.config().serifuya.user}>`,
+      },
+      (err: any) => res.status(err ? 550 : 200).send()
+    );
   }
 );
 

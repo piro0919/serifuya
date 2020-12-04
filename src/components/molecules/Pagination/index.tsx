@@ -4,6 +4,7 @@ import RcPagination, {
 } from "rc-pagination";
 import "./style.module.scss";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import locale from "rc-pagination/lib/locale/ja_JP";
 
 export type PaginationProps = Pick<RcPaginationProps, "current" | "total"> & {
   handleChange: RcPaginationProps["onChange"];
@@ -14,6 +15,7 @@ const Pagination: FC<PaginationProps> = ({ current, handleChange, total }) => (
     <RcPagination
       className="pagination"
       current={current}
+      locale={locale}
       nextIcon={GrFormNext}
       onChange={handleChange}
       pageSize={50}

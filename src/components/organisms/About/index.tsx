@@ -1,8 +1,20 @@
+import Button, { ButtonProps } from "components/atoms/Button";
 import Heading2 from "components/atoms/Heading2";
-import React, { FC } from "react";
+import Input, { InputProps } from "components/atoms/Input";
+import Textarea, { TextareaProps } from "components/atoms/Textarea";
+import React, { ComponentPropsWithoutRef, FC, forwardRef } from "react";
 import "./style.module.scss";
 
-const About: FC = () => (
+export type AboutProps = Pick<InputProps, "ref"> &
+  Pick<TextareaProps, "ref"> &
+  Pick<ButtonProps, "disabled"> & {
+    handleSubmit: ComponentPropsWithoutRef<"form">["onSubmit"];
+  };
+
+const About: FC<AboutProps> = forwardRef<
+  HTMLInputElement & HTMLTextAreaElement,
+  Omit<AboutProps, "ref">
+>(({ disabled, handleSubmit }, ref) => (
   <div styleName="wrapper">
     <article styleName="article">
       <Heading2>素材のご利用について</Heading2>
@@ -20,10 +32,38 @@ const About: FC = () => (
       <p>
         ボイス素材のリクエストや、声に関するお仕事を募集しております。
         <br />
-        piro.haniwa@gmail.com までお気軽にご連絡ください。
+        コンタクトフォームよりお気軽にご連絡ください。
       </p>
     </article>
+    <article styleName="article">
+      <Heading2>コンタクト</Heading2>
+      <form onSubmit={handleSubmit}>
+        <div styleName="form-inner">
+          <div styleName="form-labels-wrapper">
+            <label styleName="label">
+              名前
+              <Input name="name" ref={ref} />
+            </label>
+            <label styleName="label">
+              メールアドレス
+              <Input name="email" ref={ref} type="email" />
+            </label>
+            <label styleName="label">
+              件名
+              <Input name="subject" ref={ref} />
+            </label>
+            <label styleName="label">
+              内容
+              <Textarea name="body" ref={ref} />
+            </label>
+          </div>
+          <Button disabled={disabled} type="submit">
+            送信
+          </Button>
+        </div>
+      </form>
+    </article>
   </div>
-);
+));
 
 export default About;

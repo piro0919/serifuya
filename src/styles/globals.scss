@@ -10,7 +10,7 @@
 
 html {
   @include mq($until: tablet) {
-    font-size: 50%;
+    font-size: 56.25%;
   }
 
   font: 62.5% "mamelon", sans-serif;

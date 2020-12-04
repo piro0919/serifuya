@@ -1,0 +1,9 @@
+@import "styles/constants";
+
+.textarea {
+  background: map-get($map: $color, $key: gray);
+  min-height: 160px;
+  padding: 4px 8px;
+  resize: vertical;
+  width: 100%;
+}

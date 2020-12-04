@@ -1,0 +1,10 @@
+@import "styles/constants";
+
+.button {
+  background: map-get($map: $color, $key: gray);
+  padding: 4px 16px;
+}
+
+.button:disabled {
+  opacity: 0.5;
+}
