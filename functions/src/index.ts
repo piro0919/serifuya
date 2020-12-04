@@ -50,6 +50,7 @@ app.get(
     if (method === "GET") {
       const firestore = admin.firestore();
       const collectionRef = firestore.collection("voices");
+      const { size } = await collectionRef.get();
       const { docs } = await collectionRef
         .orderBy("name", "asc")
         .limit(parseInt(limit, 10))
@@ -64,6 +65,7 @@ app.get(
         };
       });
 
+      response.set("size", size.toString());
       response.send(body);
     }
   }

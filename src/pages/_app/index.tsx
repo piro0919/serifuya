@@ -4,6 +4,7 @@ import "../../styles/globals.scss";
 import "ress";
 import "react-h5-audio-player/lib/styles.css";
 import "react-toastify/dist/ReactToastify.css";
+import "rc-pagination/assets/index.css";
 
 export type MyAppProps = AppProps;
 

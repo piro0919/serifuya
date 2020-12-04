@@ -2,10 +2,11 @@
 @import "sass-mq";
 
 .wrapper {
-  width: 100%;
+  display: grid;
+  gap: 32px;
 }
 
-.wrapper :global(.infinite-scroll) {
+.list {
   @include mq($until: tablet) {
     grid-template-columns: repeat(1, 1fr);
   }

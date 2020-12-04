@@ -2,45 +2,42 @@
 import React, { ComponentPropsWithoutRef, FC, useMemo } from "react";
 import Link from "next/link";
 import "./style.module.scss";
-import InfiniteScroll, { Props } from "react-infinite-scroll-component";
+import Pagination, { PaginationProps } from "components/molecules/Pagination";
 
 type Voice = {
   id: string;
   name: string;
 };
 
-export type SerifuListProps = Pick<Props, "dataLength" | "next"> & {
+export type TopProps = Pick<
+  PaginationProps,
+  "current" | "handleChange" | "total"
+> & {
   voices: Voice[];
 };
 
-const SerifuList: FC<SerifuListProps> = ({ dataLength, next, voices }) => {
+const Top: FC<TopProps> = ({ current, handleChange, total, voices }) => {
   const items = useMemo<ComponentPropsWithoutRef<"ul">["children"]>(
     () =>
       voices.map(({ id, name }) => (
-        <div key={id}>
+        <li key={id}>
           <Link href={`/serifu/${id}`}>
             <a>
               <div styleName="item">{name}</div>
             </a>
           </Link>
-        </div>
+        </li>
       )),
     [voices]
   );
 
   return (
     <div styleName="wrapper">
-      <InfiniteScroll
-        className="infinite-scroll"
-        dataLength={dataLength}
-        hasMore={true}
-        loader={null}
-        next={next}
-      >
-        {items}
-      </InfiniteScroll>
+      <Pagination current={current} handleChange={handleChange} total={total} />
+      <ul styleName="list">{items}</ul>
+      <Pagination current={current} handleChange={handleChange} total={total} />
     </div>
   );
 };
 
-export default SerifuList;
+export default Top;

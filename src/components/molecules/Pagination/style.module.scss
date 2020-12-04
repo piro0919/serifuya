@@ -1,0 +1,16 @@
+.wrapper :global(.pagination) {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.wrapper :global(.rc-pagination-options) {
+  display: none;
+}
+
+.wrapper :global(.rc-pagination-next),
+.wrapper :global(.rc-pagination-prev) {
+  align-items: center;
+  display: flex;
+  font-size: 16px;
+  justify-content: center;
+}

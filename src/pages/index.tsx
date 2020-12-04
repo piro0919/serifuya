@@ -1,67 +1,71 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { GetServerSideProps, NextPage } from "next";
 import Layout from "components/templates/Layout";
-import SerifuList, { SerifuListProps } from "components/organisms/SerifuList";
+import Top, { TopProps } from "components/organisms/Top";
 import Head from "components/templates/Head";
 import api from "api";
+import { useRouter } from "next/dist/client/router";
 
-type Voice = {
-  id: string;
-  name: any;
-};
+export type PagesProps = Pick<TopProps, "current" | "total" | "voices">;
 
-export type PagesProps = {
-  voices: Voice[];
-};
-
-const Pages: NextPage<PagesProps> = ({ voices }) => {
-  const [dataLength, setDataLength] = useState<SerifuListProps["dataLength"]>(
-    voices.length
+const Pages: NextPage<PagesProps> = ({ current, total, voices }) => {
+  const { push } = useRouter();
+  const handleChange = useCallback<TopProps["handleChange"]>(
+    (page) => {
+      push({
+        pathname: "/",
+        query: {
+          page,
+        },
+      });
+    },
+    [push]
   );
-  const [serifuListVoices, setSerifuListVoices] = useState<
-    SerifuListProps["voices"]
-  >(voices);
-  const next = useCallback<SerifuListProps["next"]>(async () => {
-    const { data } = await api.get("/voices", {
-      params: {
-        limit: 48,
-        offset: dataLength,
-      },
-    });
-
-    setSerifuListVoices((prevSerifuListVoices) =>
-      prevSerifuListVoices.concat(data.map(({ id, name }) => ({ id, name })))
-    );
-  }, [dataLength]);
-
-  useEffect(() => {
-    setDataLength(serifuListVoices.length);
-  }, [serifuListVoices]);
 
   return (
     <Layout>
       <Head />
-      <SerifuList
-        dataLength={dataLength}
-        next={next}
-        voices={serifuListVoices}
+      <Top
+        current={current}
+        handleChange={handleChange}
+        total={total}
+        voices={voices}
       />
     </Layout>
   );
 };
 
-export const getServerSideProps: GetServerSideProps<PagesProps> = async () => {
-  const { data } = await api.get("/voices", {
+export const getServerSideProps: GetServerSideProps<PagesProps> = async ({
+  query: { page },
+}) => {
+  if (Array.isArray(page)) {
+    return {
+      props: {
+        current: 0,
+        size: 0,
+        voices: [],
+      },
+    };
+  }
+
+  const current = page ? parseInt(page, 10) : 1;
+  const {
+    data,
+    headers: { size },
+  } = await api.get("/voices", {
     params: {
-      limit: 48,
-      offset: 0,
+      current,
+      limit: 50,
+      offset: (current - 1) * 50,
     },
   });
   const voices = data.map(({ id, name }) => ({ id, name }));
 
   return {
     props: {
+      current,
       voices,
+      total: parseInt(size, 10),
     },
   };
 };

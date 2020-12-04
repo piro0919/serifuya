@@ -25,11 +25,13 @@ const Id: NextPage<IdProps> = ({ downloadUrl, expires, name }) => {
   }, [expires]);
 
   return (
-    <Layout>
-      <Head title={name} />
-      <Detail handleClick={handleClick} heading={name} src={downloadUrl} />
+    <>
+      <Layout>
+        <Head title={name} />
+        <Detail handleClick={handleClick} heading={name} src={downloadUrl} />
+      </Layout>
       <ToastContainer position="bottom-right" style={{ fontSize: "1.4rem" }} />
-    </Layout>
+    </>
   );
 };
 
