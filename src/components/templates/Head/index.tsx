@@ -8,6 +8,7 @@ export type HeadProps = {
 const Head: FC<HeadProps> = ({ title }) => (
   <NextHead>
     <meta charSet="utf-8" />
+    <link rel="icon" href="/images/favicon.ico" />
     <meta content="ie=edge" http-equiv="x-ua-compatible" />
     <meta
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
