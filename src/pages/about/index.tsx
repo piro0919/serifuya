@@ -3,12 +3,13 @@ import { NextPage } from "next";
 import Layout from "components/templates/Layout";
 import Head from "components/templates/Head";
 import AboutComponent, { AboutProps } from "components/organisms/About";
-import { Resolver, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { AnySchema } from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import api from "api";
+import * as gtag from "lib/gtag";
 
 type FieldValues = {
   body: string;
@@ -25,50 +26,71 @@ type NextShape = {
 };
 
 const About: NextPage = () => {
-  const resolver = useMemo<Resolver<FieldValues>>(
-    () =>
-      yupResolver(
-        yup.object().shape<NextShape>({
-          body: yup.string().required("内容を入力してください"),
-          email: yup
-            .string()
-            .required("メールアドレスを入力してください")
-            .email("正しいメールアドレスを入力してください"),
-          name: yup.string().required("名前を入力してください"),
-          subject: yup.string(),
-        })
-      ),
-    []
-  );
   const {
     errors,
     handleSubmit: reactHookFormHandleSubmit,
     register,
-  } = useForm<FieldValues>({ resolver });
+    watch,
+  } = useForm<FieldValues>({
+    defaultValues: {
+      body: "",
+      email: "",
+      name: "",
+      subject: "",
+    },
+    resolver: yupResolver(
+      yup.object().shape<NextShape>({
+        body: yup.string().required("内容を入力してください"),
+        email: yup
+          .string()
+          .required("メールアドレスを入力してください")
+          .email("正しいメールアドレスを入力してください"),
+        name: yup.string().required("名前を入力してください"),
+        subject: yup.string().required("件名を入力してください"),
+      })
+    ),
+  });
   const [disabled, setDisabled] = useState<AboutProps["disabled"]>(false);
+  const [status, setStatus] = useState<number | undefined>();
   const handleValid = useCallback<(data: FieldValues) => void>(async (data) => {
     setDisabled(true);
 
     const { status } = await api.post("/mail", data);
 
-    if (status === 200) {
-      toast.success("メールの送信に成功しました");
-    } else {
-      toast.error("メールの送信に失敗しました");
-    }
-
-    setDisabled(false);
+    setStatus(status);
   }, []);
   const handleSubmit = useMemo<AboutProps["handleSubmit"]>(
     () => reactHookFormHandleSubmit(handleValid),
     [handleValid, reactHookFormHandleSubmit]
   );
+  const watchSubject = watch("subject");
 
   useEffect(() => {
     Object.values(errors).forEach(({ message }) => {
       toast.error(message);
     });
   }, [errors]);
+
+  useEffect(() => {
+    if (typeof status === "undefined") {
+      return;
+    }
+
+    if (status === 200) {
+      gtag.event({
+        action: "submit_form",
+        category: "Contact",
+        label: watchSubject,
+      });
+
+      toast.success("メールの送信に成功しました");
+    } else {
+      toast.error("メールの送信に失敗しました");
+    }
+
+    setDisabled(false);
+    setStatus(undefined);
+  }, [status, watchSubject]);
 
   return (
     <>

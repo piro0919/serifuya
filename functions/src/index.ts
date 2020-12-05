@@ -130,7 +130,7 @@ app.post(
       {
         from: `${name} <${email}>`,
         html: body.replace(/\n/g, "<br />"),
-        subject: `[serifuya] ${subject || "no subject"}`,
+        subject: `[serifuya] ${subject}`,
         to: `piro <${functions.config().serifuya.user}>`,
       },
       (err: any) => res.status(err ? 550 : 200).send()
