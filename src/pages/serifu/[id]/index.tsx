@@ -3,7 +3,6 @@ import { GetServerSideProps, NextPage } from "next";
 import Layout from "components/templates/Layout";
 import Detail, { DetailProps } from "components/organisms/Detail";
 import api from "api";
-import "firebase/storage";
 import Head, { HeadProps } from "components/templates/Head";
 import FileSaver from "file-saver";
 import { ToastContainer, toast } from "react-toastify";
