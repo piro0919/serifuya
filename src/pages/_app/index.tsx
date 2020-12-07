@@ -16,6 +16,8 @@ const MyApp: FC<MyAppProps> = ({ Component, pageProps }) => {
   useEffect(() => {
     const handleRouteChange = (url: any) => {
       gtag.pageview(url);
+
+      window.scrollTo(0, 0);
     };
 
     router.events.on("routeChangeComplete", handleRouteChange);
