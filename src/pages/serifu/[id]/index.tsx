@@ -3,7 +3,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Layout from "components/templates/Layout";
 import Detail, { DetailProps } from "components/organisms/Detail";
 import api from "api";
-import Head, { HeadProps } from "components/templates/Head";
+import Seo, { SeoProps } from "components/templates/Seo";
 import FileSaver from "file-saver";
 import { ToastContainer, toast } from "react-toastify";
 import dayjs from "dayjs";
@@ -11,10 +11,11 @@ import dayjs from "dayjs";
 export type IdProps = {
   downloadUrl: DetailProps["src"];
   expires: string;
-  name: HeadProps["title"];
+  id: SeoProps["canonical"];
+  name: SeoProps["title"];
 };
 
-const Id: NextPage<IdProps> = ({ downloadUrl, expires, name }) => {
+const Id: NextPage<IdProps> = ({ downloadUrl, expires, id, name }) => {
   const handleClick = useCallback<DetailProps["handleClick"]>(() => {
     FileSaver.saveAs(downloadUrl, `${name}.mp3`);
   }, [downloadUrl, name]);
@@ -25,8 +26,8 @@ const Id: NextPage<IdProps> = ({ downloadUrl, expires, name }) => {
 
   return (
     <>
+      <Seo canonical={`/serifu/${id}`} title={name} />
       <Layout>
-        <Head title={name} />
         <Detail handleClick={handleClick} heading={name} src={downloadUrl} />
       </Layout>
       <ToastContainer position="bottom-right" style={{ fontSize: "1.4rem" }} />
@@ -43,6 +44,7 @@ export const getServerSideProps: GetServerSideProps<IdProps> = async ({
 
   return {
     props: {
+      id: Array.isArray(id) ? "" : id,
       downloadUrl,
       expires,
       name,

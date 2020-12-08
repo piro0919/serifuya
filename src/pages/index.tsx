@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { GetServerSideProps, NextPage } from "next";
 import Layout from "components/templates/Layout";
 import Top, { TopProps } from "components/organisms/Top";
-import Head from "components/templates/Head";
+import Seo from "components/templates/Seo";
 import api from "api";
 import { useRouter } from "next/dist/client/router";
 
@@ -23,15 +23,17 @@ const Pages: NextPage<PagesProps> = ({ current, total, voices }) => {
   );
 
   return (
-    <Layout>
-      <Head />
-      <Top
-        current={current}
-        handleChange={handleChange}
-        total={total}
-        voices={voices}
-      />
-    </Layout>
+    <>
+      <Seo />
+      <Layout>
+        <Top
+          current={current}
+          handleChange={handleChange}
+          total={total}
+          voices={voices}
+        />
+      </Layout>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { NextPage } from "next";
 import Layout from "components/templates/Layout";
-import Head from "components/templates/Head";
+import Seo from "components/templates/Seo";
 import AboutComponent, { AboutProps } from "components/organisms/About";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -94,8 +94,8 @@ const About: NextPage = () => {
 
   return (
     <>
+      <Seo canonical="/about" title="せりふやについて" />
       <Layout>
-        <Head title="せりふやについて" />
         <AboutComponent
           disabled={disabled}
           handleSubmit={handleSubmit}
