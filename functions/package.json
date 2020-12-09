@@ -3,7 +3,7 @@
     "dayjs": "1.9.7",
     "dotenv": "8.2.0",
     "express": "4.17.1",
-    "firebase-admin": "9.4.1",
+    "firebase-admin": "9.4.2",
     "firebase-functions": "3.13.0",
     "gmail-send": "1.8.10"
   },
