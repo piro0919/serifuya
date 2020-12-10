@@ -44,7 +44,7 @@
     "reactstrap": "8.7.1",
     "ress": "3.0.0",
     "sass-mq": "5.0.1",
-    "yup": "0.32.6"
+    "yup": "0.32.8"
   },
   "devDependencies": {
     "@types/file-saver": "2.0.1",
