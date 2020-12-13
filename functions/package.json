@@ -6,7 +6,7 @@
     "firebase-admin": "9.4.2",
     "firebase-functions": "3.13.0",
     "gmail-send": "1.8.10",
-    "jaconv": "1.0.3",
+    "jaconv": "1.0.4",
     "wanakana": "4.0.2"
   },
   "devDependencies": {
