@@ -87,7 +87,8 @@ app.get(
     const firestore = admin.firestore();
     const docRef = firestore.collection("voices").doc(id);
     const snapshot = await docRef.get();
-    const name = snapshot.get(locale === "en" ? "name_en" : "name");
+    const name = snapshot.get("name");
+    const nameEn = snapshot.get("name_en");
     const expires = dayjs().locale("ja").add(3, "minute").toDate();
     const romaji =
       locale === "en" ? wanakana.toRomaji(snapshot.get("name")) : null;
@@ -113,10 +114,10 @@ app.get(
       });
 
     response.send({
-      name,
       romaji,
       downloadUrl: signedUrl[0],
       expires: expires.toString(),
+      name: locale === "en" ? nameEn : name,
     });
   }
 );
