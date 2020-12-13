@@ -11,17 +11,20 @@ export type PagesProps = Pick<TopProps, "current" | "total" | "voices">;
 
 const Pages: NextPage<PagesProps> = ({ current, total, voices }) => {
   const { push } = useRouter();
-  const handleChange = useCallback<TopProps["handleChange"]>(
-    (page) => {
-      push({
-        pathname: "/",
-        query: {
-          page,
-        },
-      });
-    },
-    [push]
-  );
+  // const handleChange = useCallback<TopProps["handleChange"]>(
+  //   (page) => {
+  //     push({
+  //       pathname: "/",
+  //       query: {
+  //         page,
+  //       },
+  //     });
+  //   },
+  //   [push]
+  // );
+  const handleChange = useCallback<TopProps["handleChange"]>((page) => {
+    console.log(page);
+  }, []);
 
   return (
     <>
