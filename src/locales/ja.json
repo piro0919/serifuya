@@ -1,0 +1,23 @@
+{
+  "about": {
+    "aboutRequestAndWork": "リクエスト、お仕事について",
+    "aboutRequestAndWorkText": "ボイス素材のリクエストや、声に関するお仕事を募集しております。\nコンタクトフォームよりお気軽にご連絡ください。",
+    "aboutTheUseOfMaterials": "素材のご利用について",
+    "aboutTheUseOfMaterialsText": "ボイス素材は全て無料でご利用いただけます。\n著作権は放棄しておりません。\nボイス素材の再配布はご遠慮ください。\n公序良俗に反するサイト、法律に違反する使用はご遠慮ください。\n反社会的勢力や違法行為に関わる使用はご遠慮ください。\nその他、不適切な使用はご遠慮ください。",
+    "contact": "コンタクト",
+    "emailAddress": "メールアドレス",
+    "message": "内容",
+    "name": "名前",
+    "subject": "件名",
+    "submit": "送信"
+  },
+  "common": {
+    "aboutSerifuya": "せりふやについて",
+    "description": "女の子のボイスフリー素材を無料で配布しています",
+    "subTitle": "女の子のボイスフリー素材 せりふや",
+    "title": "せりふや"
+  },
+  "detail": {
+    "toastMessage": "{{time}} まで有効"
+  }
+}

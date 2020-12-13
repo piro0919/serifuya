@@ -7,13 +7,17 @@ import "./style.module.scss";
 export type DetailProps = {
   handleClick: ComponentPropsWithoutRef<"button">["onClick"];
   heading: Heading2Props["children"];
+  romaji: ComponentPropsWithoutRef<"div">["children"];
   src: string;
 };
 
-const Detail: FC<DetailProps> = ({ handleClick, heading, src }) => (
+const Detail: FC<DetailProps> = ({ handleClick, heading, romaji, src }) => (
   <div styleName="wrapper">
     <div styleName="heading2-wrapper">
-      <Heading2>{heading}</Heading2>
+      <div>
+        <Heading2>{heading}</Heading2>
+        <div>{romaji || null}</div>
+      </div>
       <button onClick={handleClick}>
         <DownloadIcon />
       </button>

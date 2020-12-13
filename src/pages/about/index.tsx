@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Layout from "components/templates/Layout";
 import Seo from "components/templates/Seo";
 import AboutComponent, { AboutProps } from "components/organisms/About";
@@ -10,6 +10,8 @@ import { AnySchema } from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import api from "api";
 import * as gtag from "lib/gtag";
+import { getLngDict } from "lib/i18n";
+import { useI18n } from "next-localization";
 
 type FieldValues = {
   body: string;
@@ -25,7 +27,7 @@ type NextShape = {
   subject: AnySchema<string>;
 };
 
-const About: NextPage = () => {
+const About: NextPage = (a) => {
   const {
     errors,
     handleSubmit: reactHookFormHandleSubmit,
@@ -91,10 +93,11 @@ const About: NextPage = () => {
     setDisabled(false);
     setStatus(undefined);
   }, [status, watchSubject]);
+  const { t } = useI18n();
 
   return (
     <>
-      <Seo canonical="/about" title="せりふやについて" />
+      <Seo canonical="/about" title={t("common.aboutSerifuya")} />
       <Layout>
         <AboutComponent
           disabled={disabled}
@@ -105,6 +108,16 @@ const About: NextPage = () => {
       <ToastContainer position="bottom-right" style={{ fontSize: "1.4rem" }} />
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  const lngDict = await getLngDict(locale);
+
+  return {
+    props: {
+      lngDict,
+    },
+  };
 };
 
 export default About;

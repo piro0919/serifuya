@@ -3,3 +3,7 @@
   gap: 8px;
   grid-template: auto / repeat(5, 1fr);
 }
+
+.wrapper :global(.button) {
+  display: flex;
+}

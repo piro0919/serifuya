@@ -1,5 +1,5 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import Heading1 from "components/atoms/Heading1";
+import LocaleToggle from "components/atoms/LocaleToggle";
 import ShareIcons from "components/molecules/ShareIcons";
 import Link from "next/link";
 import React, { FC } from "react";
@@ -12,7 +12,10 @@ const Header: FC = () => (
         <Heading1 />
       </a>
     </Link>
-    <ShareIcons />
+    <div styleName="settings-wrapper">
+      <LocaleToggle />
+      <ShareIcons />
+    </div>
   </header>
 );
 

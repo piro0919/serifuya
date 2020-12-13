@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { ComponentPropsWithoutRef, FC, useMemo } from "react";
 import Link from "next/link";
 import "./style.module.scss";

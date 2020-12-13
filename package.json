@@ -2,7 +2,7 @@
   "babel": {
     "plugins": [
       [
-        "babel-plugin-react-css-modules",
+        "react-css-modules",
         {
           "filetypes": {
             ".scss": {
@@ -28,6 +28,7 @@
     "generic-names": "2.0.1",
     "next": "10.0.3",
     "next-compose-plugins": "2.2.1",
+    "next-localization": "0.10.0",
     "next-manifest": "3.0.1",
     "next-seo": "4.17.0",
     "node-sass": "4.14.1",
@@ -40,10 +41,12 @@
     "react-icons": "4.1.0",
     "react-no-ssr": "1.1.0",
     "react-share": "4.3.1",
+    "react-switch": "5.0.1",
     "react-toastify": "6.2.0",
     "reactstrap": "8.7.1",
     "ress": "3.0.0",
     "sass-mq": "5.0.1",
+    "uniqid": "5.2.0",
     "yup": "0.32.8"
   },
   "devDependencies": {
@@ -52,6 +55,7 @@
     "@types/react": "16.14.2",
     "@types/react-css-modules": "4.6.2",
     "@types/react-no-ssr": "1.1.1",
+    "@types/uniqid": "5.2.0",
     "@typescript-eslint/eslint-plugin": "4.9.1",
     "@typescript-eslint/parser": "4.9.1",
     "babel-eslint": "10.1.0",
@@ -67,7 +71,25 @@
   "eslintConfig": {
     "extends": [
       "react-app"
-    ]
+    ],
+    "rules": {
+      "jsx-a11y/anchor-is-valid": [
+        "error",
+        {
+          "aspects": [
+            "invalidHref",
+            "preferButton"
+          ],
+          "components": [
+            "Link"
+          ],
+          "specialLink": [
+            "hrefLeft",
+            "hrefRight"
+          ]
+        }
+      ]
+    }
   },
   "name": "nextjs",
   "private": true,

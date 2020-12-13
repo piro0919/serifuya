@@ -1,0 +1,23 @@
+{
+  "about": {
+    "aboutRequestAndWork": "About request and work",
+    "aboutRequestAndWorkText": "We are looking for voice material requests and voice-related jobs.\nPlease feel free to contact us using the contact form.",
+    "aboutTheUseOfMaterials": "About the use of materials",
+    "aboutTheUseOfMaterialsText": "All voice materials are available free of charge.\nThe copyright is not abandoned.\nPlease refrain from redistributing voice materials.\nPlease refrain from using sites that are offensive to public order and morals or that violate the law.\nPlease refrain from using it for antisocial forces or illegal activities.\nIn addition, please refrain from improper use.",
+    "contact": "Contact",
+    "emailAddress": "Email address",
+    "message": "Message",
+    "name": "Name",
+    "subject": "Subject",
+    "submit": "Submit"
+  },
+  "common": {
+    "aboutSerifuya": "About",
+    "description": "We distribute Japanese voice-free materials for Japanese girls for free",
+    "subTitle": "Japanese voice free material for Japanese girls Serifuya",
+    "title": "Serifuya"
+  },
+  "detail": {
+    "toastMessage": "Valid until {{time}}"
+  }
+}

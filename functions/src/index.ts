@@ -3,6 +3,7 @@ import * as express from "express";
 import * as admin from "firebase-admin";
 import * as dayjs from "dayjs";
 import * as dotenv from "dotenv";
+import * as wanakana from "wanakana";
 
 dotenv.config();
 
@@ -45,7 +46,7 @@ type VoicesResBody = {
 app.get(
   "/voices",
   async (
-    { query: { limit = "0", offset = "0" } }: any,
+    { query: { limit = "0", locale, offset = "0" } }: any,
     response: functions.Response<VoicesResBody>
   ) => {
     const firestore = admin.firestore();
@@ -61,7 +62,7 @@ app.get(
 
       return {
         id: id,
-        name: doc.get("name"),
+        name: doc.get(locale === "en" ? "name_en" : "name"),
       };
     });
 
@@ -74,25 +75,29 @@ type VoicesIdResBody = {
   downloadUrl: string;
   expires: string;
   name: any;
+  romaji?: any;
 };
 
 app.get(
   "/voices/:id",
   async (
-    { params: { id } }: any,
+    { params: { id }, query: { locale }, ...a }: any,
     response: functions.Response<VoicesIdResBody>
   ) => {
     const firestore = admin.firestore();
     const docRef = firestore.collection("voices").doc(id);
     const snapshot = await docRef.get();
-    const name = snapshot.get("name");
+    const name = snapshot.get(locale === "en" ? "name_en" : "name");
     const expires = dayjs().locale("ja").add(3, "minute").toDate();
+    const romaji =
+      locale === "en" ? wanakana.toRomaji(snapshot.get("name")) : null;
 
     if (process.env.NODE_ENV === "development") {
       response.send({
         downloadUrl: "",
         expires: expires.toString(),
         name,
+        romaji,
       });
 
       return;
@@ -108,9 +113,10 @@ app.get(
       });
 
     response.send({
+      name,
+      romaji,
       downloadUrl: signedUrl[0],
       expires: expires.toString(),
-      name,
     });
   }
 );

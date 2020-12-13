@@ -5,9 +5,12 @@
     "express": "4.17.1",
     "firebase-admin": "9.4.2",
     "firebase-functions": "3.13.0",
-    "gmail-send": "1.8.10"
+    "gmail-send": "1.8.10",
+    "jaconv": "1.0.3",
+    "wanakana": "4.0.2"
   },
   "devDependencies": {
+    "@types/wanakana": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "3.10.1",
     "@typescript-eslint/parser": "3.10.1",
     "concurrently": "5.3.0",

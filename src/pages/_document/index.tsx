@@ -9,10 +9,14 @@ class MyDocument extends Document {
   }
 
   render() {
+    const { locale } = this.props;
+
     return (
       <Html>
         <Head>
-          <Manifest href="/jsons/manifest.json" />
+          <Manifest
+            href={`/jsons/manifest${locale === "en" ? "_en" : ""}.json`}
+          />
           <script
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_TRACKING_ID}`}
