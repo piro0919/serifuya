@@ -26,6 +26,7 @@ module.exports = withPlugins(
   {
     i18n: {
       defaultLocale: "ja",
+      localeDetection: false,
       locales: ["en", "ja"],
     },
   }
