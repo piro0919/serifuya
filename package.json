@@ -21,7 +21,7 @@
     "@react-hook/window-size": "3.0.7",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-sass": "1.0.1",
-    "axios": "0.21.0",
+    "axios": "0.21.1",
     "babel-plugin-react-css-modules": "5.2.6",
     "dayjs": "1.9.7",
     "file-saver": "2.0.5",
