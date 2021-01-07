@@ -25,7 +25,7 @@
     "babel-plugin-react-css-modules": "5.2.6",
     "dayjs": "1.10.2",
     "file-saver": "2.0.5",
-    "generic-names": "2.0.1",
+    "generic-names": "3.0.0",
     "next": "10.0.5",
     "next-compose-plugins": "2.2.1",
     "next-localization": "0.11.0",
