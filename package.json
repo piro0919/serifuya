@@ -23,7 +23,7 @@
     "@zeit/next-sass": "1.0.1",
     "axios": "0.21.1",
     "babel-plugin-react-css-modules": "5.2.6",
-    "dayjs": "1.10.3",
+    "dayjs": "1.10.4",
     "file-saver": "2.0.5",
     "generic-names": "2.0.1",
     "next": "10.0.5",
