@@ -23,6 +23,9 @@ if (!admin.apps.length && process.env.FIREBASE_CONFIG) {
   });
 }
 
+const firebaseAppAuth = admin.auth();
+const firestore = admin.firestore();
+const storage = admin.storage();
 const app = express();
 const main = express();
 
@@ -46,16 +49,15 @@ type VoicesResBody = {
 app.get(
   "/voices",
   async (
-    { query: { limit = "0", locale, offset = "0" } }: any,
-    response: functions.Response<VoicesResBody>
+    { query: { limit = "0", locale, offset = "0" } }: express.Request,
+    response: express.Response<VoicesResBody>
   ) => {
-    const firestore = admin.firestore();
     const collectionRef = firestore.collection("voices");
     const { size } = await collectionRef.get();
     const { docs } = await collectionRef
       .orderBy("name", "asc")
-      .limit(parseInt(limit, 10))
-      .offset(parseInt(offset, 10))
+      .limit(parseInt(limit as string, 10))
+      .offset(parseInt(offset as string, 10))
       .get();
     const body = docs.map((doc) => {
       const { id } = doc;
@@ -72,8 +74,6 @@ app.get(
 );
 
 type VoicesIdResBody = {
-  downloadUrl: string;
-  expires: string;
   name: any;
   romaji?: any;
 };
@@ -81,52 +81,73 @@ type VoicesIdResBody = {
 app.get(
   "/voices/:id",
   async (
-    { params: { id }, query: { locale }, ...a }: any,
-    response: functions.Response<VoicesIdResBody>
+    { params: { id }, query: { locale } }: express.Request,
+    response: express.Response<VoicesIdResBody>
   ) => {
-    const firestore = admin.firestore();
     const docRef = firestore.collection("voices").doc(id);
     const snapshot = await docRef.get();
     const name = snapshot.get("name");
     const nameEn = snapshot.get("name_en");
-    const expires = dayjs().locale("ja").add(3, "minute").toDate();
     const romaji =
       locale === "en" ? wanakana.toRomaji(snapshot.get("name")) : null;
 
-    if (process.env.NODE_ENV === "development") {
-      response.send({
-        downloadUrl: "",
-        expires: expires.toString(),
-        name,
-        romaji,
-      });
+    response.send({
+      romaji,
+      name: locale === "en" ? nameEn : name,
+    });
+  }
+);
+
+type VoicesIdDownloadResBody = {
+  downloadUrl: string;
+  expires: string;
+};
+
+app.get(
+  "/voices/:id/download",
+  async (
+    { headers: { authorization }, params: { id } }: express.Request,
+    response: express.Response<VoicesIdDownloadResBody>
+  ) => {
+    if (!authorization) {
+      response.sendStatus(401);
 
       return;
     }
 
-    const storage = admin.storage();
-    const signedUrl = await storage
-      .bucket()
-      .file(`voices/${name}.mp3`)
-      .getSignedUrl({
-        expires,
-        action: "read",
-      });
+    const idToken = authorization.split(" ")[1];
+    const expires = dayjs().locale("ja").add(3, "minute").toDate();
 
-    response.send({
-      romaji,
-      downloadUrl: signedUrl[0],
-      expires: expires.toString(),
-      name: locale === "en" ? nameEn : name,
-    });
+    firebaseAppAuth
+      .verifyIdToken(idToken)
+      .then(async () => {
+        const docRef = firestore.collection("voices").doc(id);
+        const snapshot = await docRef.get();
+        const name = snapshot.get("name");
+        const signedUrl = await storage
+          .bucket()
+          .file(`voices/${name}.mp3`)
+          .getSignedUrl({
+            expires,
+            action: "read",
+          });
+
+        response.send({
+          downloadUrl: signedUrl[0],
+          expires: expires.toString(),
+        });
+      })
+      .catch(() => {
+        response.sendStatus(400);
+      });
   }
 );
 
 app.post(
   "/mail",
   async (
-    { body: { body, email, name, subject } }: any,
-    res: functions.Response
+    { body: { body, email, name, subject } }: express.Request,
+    res: express.Response
   ) => {
     const send = require("gmail-send")({
       pass: functions.config().serifuya.password,

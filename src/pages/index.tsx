@@ -3,11 +3,13 @@ import { GetServerSideProps, NextPage } from "next";
 import Layout from "components/templates/Layout";
 import Top, { TopProps } from "components/organisms/Top";
 import Seo from "components/templates/Seo";
-import api from "api";
+import api from "lib/api";
 import { useRouter } from "next/dist/client/router";
 import { getLngDict } from "lib/i18n";
 
-export type PagesProps = Pick<TopProps, "current" | "total" | "voices">;
+type ServerSideProps = Pick<TopProps, "current" | "total" | "voices">;
+
+export type PagesProps = ServerSideProps;
 
 const Pages: NextPage<PagesProps> = ({ current, total, voices }) => {
   const { push } = useRouter();

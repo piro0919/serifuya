@@ -2,16 +2,21 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { GetServerSideProps, NextPage } from "next";
 import Layout from "components/templates/Layout";
 import Seo from "components/templates/Seo";
-import AboutComponent, { AboutProps } from "components/organisms/About";
+import AboutComponent, {
+  AboutProps as AboutComponentProps,
+} from "components/organisms/About";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { AnySchema } from "yup";
 import { ToastContainer, toast } from "react-toastify";
-import api from "api";
+import api from "lib/api";
 import * as gtag from "lib/gtag";
 import { getLngDict } from "lib/i18n";
 import { useI18n } from "next-localization";
+import withCreateComponentWithAuth, {
+  CreateComponentWithAuthProps,
+} from "hocs/withCreateComponentWithAuth";
 
 type FieldValues = {
   body: string;
@@ -27,11 +32,15 @@ type NextShape = {
   subject: AnySchema<string>;
 };
 
-const About: NextPage = (a) => {
+export type AboutProps = CreateComponentWithAuthProps;
+
+const About: NextPage<AboutProps> = ({ user }) => {
+  const { t } = useI18n();
   const {
     errors,
     handleSubmit: reactHookFormHandleSubmit,
     register,
+    setValue,
     watch,
   } = useForm<FieldValues>({
     defaultValues: {
@@ -42,26 +51,38 @@ const About: NextPage = (a) => {
     },
     resolver: yupResolver(
       yup.object().shape<NextShape>({
-        body: yup.string().required("内容を入力してください"),
+        body: yup.string().required(t("about.messageIsRequired")),
         email: yup
           .string()
-          .required("メールアドレスを入力してください")
-          .email("正しいメールアドレスを入力してください"),
-        name: yup.string().required("名前を入力してください"),
-        subject: yup.string().required("件名を入力してください"),
+          .required(t("about.emailAddressIsRequired"))
+          .email(t("about.pleaseEnterTheCorrectEmailAddress")),
+        name: yup.string().required(t("about.nameIsRequired")),
+        subject: yup.string().required(t("about.subjectIsRequired")),
       })
     ),
   });
-  const [disabled, setDisabled] = useState<AboutProps["disabled"]>(false);
+  const [disabled, setDisabled] = useState<AboutComponentProps["disabled"]>(
+    false
+  );
   const [status, setStatus] = useState<number | undefined>();
-  const handleValid = useCallback<(data: FieldValues) => void>(async (data) => {
-    setDisabled(true);
+  const handleValid = useCallback<(data: FieldValues) => void>(
+    async (data) => {
+      if (user) {
+        setDisabled(true);
 
-    const { status } = await api.post("/mail", data);
+        const { status } = await api.post("/mail", data);
 
-    setStatus(status);
-  }, []);
-  const handleSubmit = useMemo<AboutProps["handleSubmit"]>(
+        setStatus(status);
+
+        return;
+      }
+
+      toast.warn(t("common.pleaseSignIn"));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [t("common.pleaseSignIn"), user]
+  );
+  const handleSubmit = useMemo<AboutComponentProps["handleSubmit"]>(
     () => reactHookFormHandleSubmit(handleValid),
     [handleValid, reactHookFormHandleSubmit]
   );
@@ -73,27 +94,49 @@ const About: NextPage = (a) => {
     });
   }, [errors]);
 
+  useEffect(
+    () => {
+      if (typeof status === "undefined") {
+        return;
+      }
+
+      if (status === 200) {
+        gtag.event({
+          action: "submit_form",
+          category: "Contact",
+          label: watchSubject,
+        });
+
+        toast.success(t("about.emailSentSuccessfully"));
+      } else {
+        toast.error(t("about.emailSentError"));
+      }
+
+      setDisabled(false);
+      setStatus(undefined);
+    } /* eslint-disable react-hooks/exhaustive-deps */,
+    [
+      status,
+      t("about.emailSentSuccessfully"),
+      t("about.emailSentError"),
+      watchSubject,
+    ]
+    /* eslint-enable react-hooks/exhaustive-deps */
+  );
+
   useEffect(() => {
-    if (typeof status === "undefined") {
+    if (!user) {
+      setValue("email", "");
+      setValue("name", "");
+
       return;
     }
 
-    if (status === 200) {
-      gtag.event({
-        action: "submit_form",
-        category: "Contact",
-        label: watchSubject,
-      });
+    const { displayName, email } = user;
 
-      toast.success("メールの送信に成功しました");
-    } else {
-      toast.error("メールの送信に失敗しました");
-    }
-
-    setDisabled(false);
-    setStatus(undefined);
-  }, [status, watchSubject]);
-  const { t } = useI18n();
+    setValue("email", email);
+    setValue("name", displayName);
+  }, [setValue, user]);
 
   return (
     <>
@@ -120,4 +163,4 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   };
 };
 
-export default About;
+export default withCreateComponentWithAuth(About);

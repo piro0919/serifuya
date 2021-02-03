@@ -6,18 +6,28 @@
     "aboutTheUseOfMaterialsText": "ボイス素材は全て無料でご利用いただけます。\n著作権は放棄しておりません。\nボイス素材の再配布はご遠慮ください。\n公序良俗に反するサイト、法律に違反する使用はご遠慮ください。\n反社会的勢力や違法行為に関わる使用はご遠慮ください。\nその他、不適切な使用はご遠慮ください。",
     "contact": "コンタクト",
     "emailAddress": "メールアドレス",
+    "emailAddressIsRequired": "メールアドレスを入力してください",
+    "emailSentError": "メールの送信に失敗しました",
+    "emailSentSuccessfully": "メールの送信に成功しました",
     "message": "内容",
+    "messageIsRequired": "内容を入力してください",
     "name": "名前",
+    "nameIsRequired": "名前を入力してください",
+    "pleaseEnterTheCorrectEmailAddress": "正しいメールアドレスを入力してください",
     "subject": "件名",
+    "subjectIsRequired": "件名を入力してください",
     "submit": "送信"
   },
   "common": {
     "aboutSerifuya": "せりふやについて",
     "description": "女の子のボイスフリー素材を無料で配布しています",
+    "pleaseSignIn": "Google アカウントでログインしてください",
+    "signIn": "ログイン",
+    "signOut": "ログアウト",
     "subTitle": "女の子のボイスフリー素材 せりふや",
     "title": "せりふや"
   },
   "detail": {
-    "toastMessage": "{{time}} まで有効"
+    "validUntilTime": "{{time}} まで有効"
   }
 }

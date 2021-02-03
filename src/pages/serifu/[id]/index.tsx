@@ -2,35 +2,55 @@ import React, { useCallback, useEffect } from "react";
 import { GetServerSideProps, NextPage } from "next";
 import Layout from "components/templates/Layout";
 import Detail, { DetailProps } from "components/organisms/Detail";
-import api from "api";
+import api from "lib/api";
 import Seo, { SeoProps } from "components/templates/Seo";
 import FileSaver from "file-saver";
 import { ToastContainer, toast } from "react-toastify";
 import dayjs from "dayjs";
 import { getLngDict } from "lib/i18n";
 import { useI18n } from "next-localization";
+import withCreateComponentWithAuth, {
+  CreateComponentWithAuthProps,
+} from "hocs/withCreateComponentWithAuth";
+import { parseCookies } from "nookies";
 
-export type IdProps = Pick<DetailProps, "romaji"> & {
+type ServerSideProps = Pick<DetailProps, "romaji"> & {
   downloadUrl: DetailProps["src"];
   expires: string;
   id: SeoProps["canonical"];
   name: SeoProps["title"];
 };
 
-const Id: NextPage<IdProps> = ({ downloadUrl, expires, id, name, romaji }) => {
+export type IdProps = CreateComponentWithAuthProps & ServerSideProps;
+
+const Id: NextPage<IdProps> = ({
+  downloadUrl,
+  expires,
+  id,
+  name,
+  romaji,
+  user,
+}) => {
   const { t } = useI18n();
   const handleClick = useCallback<DetailProps["handleClick"]>(() => {
-    FileSaver.saveAs(downloadUrl, `${name}.mp3`);
-  }, [downloadUrl, name]);
+    if (user) {
+      FileSaver.saveAs(downloadUrl, `${name}.mp3`);
+
+      return;
+    }
+
+    toast.warn(t("common.pleaseSignIn"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [downloadUrl, name, t("common.pleaseSignIn"), user]);
 
   useEffect(() => {
     toast.info(
-      t("detail.toastMessage", {
+      t("detail.validUntilTime", {
         time: dayjs(expires).format("YYYY/MM/DD HH:mm:ss"),
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t("detail.toastMessage")]);
+  }, [t("detail.validUntilTime")]);
 
   return (
     <>
@@ -48,25 +68,53 @@ const Id: NextPage<IdProps> = ({ downloadUrl, expires, id, name, romaji }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<IdProps> = async ({
-  locale,
-  params: { id },
-}) => {
+export const getServerSideProps: GetServerSideProps<ServerSideProps> = async (
+  ctx
+) => {
+  const { idToken } = parseCookies(ctx);
   const {
-    data: { downloadUrl, expires, name, romaji },
-  } = await api.get(`/voices/${id}`, { params: { locale } });
+    locale,
+    params: { id: paramsId },
+  } = ctx;
   const lngDict = await getLngDict(locale);
+  const id = Array.isArray(paramsId) ? "" : paramsId;
+  const {
+    data: { name, romaji },
+  } = await api.get(`/voices/${id}`, {
+    params: { locale },
+  });
+
+  if (!idToken) {
+    return {
+      props: {
+        id,
+        lngDict,
+        name,
+        romaji,
+        downloadUrl: "",
+        expires: "",
+      },
+    };
+  }
+
+  const {
+    data: { downloadUrl, expires },
+  } = await api.get(`/voices/${id}/download`, {
+    headers: {
+      authorization: `Bearer ${idToken}`,
+    },
+  });
 
   return {
     props: {
       downloadUrl,
       expires,
+      id,
       lngDict,
       name,
       romaji,
-      id: Array.isArray(id) ? "" : id,
     },
   };
 };
 
-export default Id;
+export default withCreateComponentWithAuth(Id);

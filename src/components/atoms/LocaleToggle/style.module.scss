@@ -1,9 +1,10 @@
+@import "styles/constants";
+
 .icon {
   align-items: center;
-  color: #fff;
+  color: map-get($map: $color, $key: black);
   display: flex;
-  font-size: 1.2rem;
   height: 24px;
   justify-content: center;
-  width: 24px;
+  width: 32px;
 }

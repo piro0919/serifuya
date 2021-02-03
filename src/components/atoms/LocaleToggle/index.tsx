@@ -19,13 +19,15 @@ const LocaleToggle: FC = () => {
     <Switch
       checked={checked}
       checkedIcon={<div styleName="icon">ja</div>}
-      handleDiameter={18}
+      handleDiameter={14}
       height={24}
-      offColor="#868686"
+      offColor="#efefef"
+      offHandleColor="#222"
       onChange={handleChange}
-      onColor="#868686"
+      onColor="#efefef"
+      onHandleColor="#222"
       uncheckedIcon={<div styleName="icon">en</div>}
-      width={44}
+      width={52}
     />
   );
 };

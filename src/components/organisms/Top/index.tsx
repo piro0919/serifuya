@@ -20,7 +20,7 @@ const Top: FC<TopProps> = ({ current, handleChange, total, voices }) => {
     () =>
       voices.map(({ id, name }) => (
         <li key={id}>
-          <Link href={`/serifu/${id}`}>
+          <Link as={`/serifu/${id}`} href="/serifu/[id]">
             <a>
               <div styleName="item">{name}</div>
             </a>

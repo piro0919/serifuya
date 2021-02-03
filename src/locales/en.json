@@ -6,18 +6,28 @@
     "aboutTheUseOfMaterialsText": "All voice materials are available free of charge.\nThe copyright is not abandoned.\nPlease refrain from redistributing voice materials.\nPlease refrain from using sites that are offensive to public order and morals or that violate the law.\nPlease refrain from using it for antisocial forces or illegal activities.\nIn addition, please refrain from improper use.",
     "contact": "Contact",
     "emailAddress": "Email address",
+    "emailAddressIsRequired": "Email address is required",
+    "emailSentError": "Email sent error",
+    "emailSentSuccessfully": "Email sent successfully",
     "message": "Message",
+    "messageIsRequired": "Message is required",
     "name": "Name",
+    "nameIsRequired": "Name is required",
+    "pleaseEnterTheCorrectEmailAddress": "Please enter the correct email address",
     "subject": "Subject",
+    "subjectIsRequired": "Subject is required",
     "submit": "Submit"
   },
   "common": {
     "aboutSerifuya": "About",
     "description": "We distribute Japanese voice-free materials for Japanese girls for free",
+    "pleaseSignIn": "Please sign in with your Google Account",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
     "subTitle": "Japanese voice free material for Japanese girls Serifuya",
     "title": "Serifuya"
   },
   "detail": {
-    "toastMessage": "Valid until {{time}}"
+    "validUntilTime": "Valid until {{time}}"
   }
 }
