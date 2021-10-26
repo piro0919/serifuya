@@ -26,7 +26,7 @@
     "dayjs": "1.10.4",
     "file-saver": "2.0.5",
     "generic-names": "2.0.1",
-    "next": "10.0.5",
+    "next": "10.2.3",
     "next-compose-plugins": "2.2.1",
     "next-localization": "0.11.0",
     "next-manifest": "3.0.1",
