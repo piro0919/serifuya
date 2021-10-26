@@ -46,7 +46,7 @@
     "sass": "1.43.3",
     "sass-mq": "5.0.1",
     "uniqid": "5.2.0",
-    "yup": "0.32.8"
+    "yup": "0.32.11"
   },
   "devDependencies": {
     "@types/file-saver": "2.0.1",
