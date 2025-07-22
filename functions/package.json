@@ -4,7 +4,7 @@
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "firebase-admin": "9.5.0",
-    "firebase-functions": "3.13.1",
+    "firebase-functions": "3.24.1",
     "gmail-send": "1.8.10",
     "jaconv": "1.0.4",
     "wanakana": "4.0.2"
