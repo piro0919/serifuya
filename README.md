@@ -2,7 +2,7 @@
 
 > Dialogue/serifu image generator.
 
-[🔗 Live Site](https://serifuya.kk-web.link/)
+[🔗 Live Site](https://serifuya.kkweb.io/)
 
 ## ✨ Features
 
