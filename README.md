@@ -2,8 +2,6 @@
 
 > Dialogue/serifu image generator.
 
-セリフ画像を作成するツール。
-
 [🔗 Live Site](https://serifuya.kk-web.link/)
 
 ## ✨ Features
@@ -23,3 +21,7 @@
 pnpm install
 pnpm dev
 ```
+
+## 📄 License
+
+MIT
